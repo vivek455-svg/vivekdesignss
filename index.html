@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Vivek Saroj Studio</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Vivek Saroj — web designer and Framer developer building conversion-focused websites for SaaS and tech startups.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: 12-column studio grid on stone paper; full-bleed project galleries; footer revealed from under the page. Single light look by design. */
+:root{
+  --bg:#f3f4ef;       /* paper */
+  --tile:#e6e7e2;     /* cards, slides, tags */
+  --btn-2:#d4d5d0;    /* avatar fill */
+  --btn-1:#1f1f1f;    /* drag badge */
+  --btn-top:#ff6c2c;  /* button gradient */
+  --btn-mid:#ff4f14;
+  --btn-low:#f03e07;
+  --btn-lip:#c43300;
+  --btn-glow:rgba(255,82,20,.55);
+  --btn-text:#fff4e6;
+  --ink:#141414;
+  --body:#4c4c4c;     /* running text */
+  --mute:#797979;     /* labels */
+
+  --sans:"Geist",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"Geist Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+
+  --frame:clamp(0px,2.1vw,30px);
+  --pad:clamp(16px,2.5vw,36px);
+  --side-l:max(calc(var(--frame) + var(--pad)), env(safe-area-inset-left,0px));
+  --side-r:max(calc(var(--frame) + var(--pad)), env(safe-area-inset-right,0px));
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.4;letter-spacing:-.03em;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--bg)}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:1.5px solid var(--ink);outline-offset:3px}
+ul{list-style:none;margin:0;padding:0}
+p,h1,h2,h3,figure,blockquote,dl,dd{margin:0}
+
+.mono{font-family:var(--mono);font-size:14px;line-height:1.1;letter-spacing:-.03em;text-transform:uppercase}
+.label{display:flex;align-items:center;gap:8px;color:var(--mute)}
+.label::before{content:"";width:6px;height:6px;background:var(--ink)}
+
+/* text that rolls up on hover */
+.roll{display:inline-block;overflow:hidden;height:1.1em;vertical-align:top}
+.roll span{display:block;transition:transform .45s cubic-bezier(.65,0,.35,1)}
+a:hover .roll span, button:hover .roll span{transform:translateY(-100%)}
+
+/* glossy orange key: top sheen, inner bevel, darker lip, warm glow */
+.btn{display:inline-flex;align-items:center;padding:13px 20px;border:0;border-radius:14px;cursor:pointer;
+  font-family:var(--sans);font-size:15px;font-weight:500;line-height:1.1;letter-spacing:-.01em;text-transform:none;color:var(--btn-text);
+  background:linear-gradient(180deg,var(--btn-top) 0%,var(--btn-mid) 55%,var(--btn-low) 100%);
+  text-shadow:0 1px 0 rgba(140,30,0,.35);
+  box-shadow:inset 0 2px 1px rgba(255,255,255,.38),inset 0 -3px 2px rgba(150,28,0,.38),inset 0 0 0 1px rgba(255,140,90,.35),
+    0 1px 0 var(--btn-lip),0 12px 26px -8px var(--btn-glow),0 2px 4px rgba(120,30,0,.22);
+  transition:transform .2s ease,box-shadow .2s ease,filter .2s ease}
+.btn:hover{transform:translateY(-1px);filter:saturate(1.08) brightness(1.03);
+  box-shadow:inset 0 2px 1px rgba(255,255,255,.42),inset 0 -3px 2px rgba(150,28,0,.38),inset 0 0 0 1px rgba(255,140,90,.4),
+    0 1px 0 var(--btn-lip),0 18px 34px -8px var(--btn-glow),0 3px 6px rgba(120,30,0,.25)}
+.btn:active{transform:translateY(1px);
+  box-shadow:inset 0 2px 3px rgba(150,28,0,.35),inset 0 0 0 1px rgba(255,140,90,.3),0 0 0 var(--btn-lip),0 6px 14px -6px var(--btn-glow)}
+.btns{display:flex;flex-wrap:wrap;gap:8px}
+
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px}
+
+/* ---------- nav ---------- */
+.nav{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;z-index:50;padding-left:var(--side-l);padding-right:var(--side-r);background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.nav-in{display:flex;justify-content:space-between;align-items:center;padding-block:18px}
+@media (max-width:700px){.nav .hide-sm{display:none}}
+
+/* ---------- page ---------- */
+main{position:relative;z-index:2;background:var(--bg);padding-left:var(--side-l);padding-right:var(--side-r);padding-bottom:140px;display:flex;flex-direction:column;gap:140px}
+
+.hero{padding-top:192px}
+.hero h1{font-size:clamp(26px,3.2vw,36px);font-weight:500;line-height:1.15;letter-spacing:-.05em;max-width:760px;margin-top:25px;text-wrap:pretty}
+.hero .btns{margin-top:36px}
+
+/* ---------- work ---------- */
+.work-list{display:flex;flex-direction:column;gap:140px;margin-top:25px}
+.gallery{margin-left:calc(-1 * var(--side-l));margin-right:calc(-1 * var(--side-r));overflow-x:auto;scrollbar-width:none;cursor:none;user-select:none;-webkit-user-select:none;overscroll-behavior-x:contain}
+.gallery::-webkit-scrollbar{display:none}
+.track{display:flex;gap:8px;width:max-content;padding-left:var(--side-l);padding-right:var(--side-r)}
+.slide{flex:none;width:clamp(280px,67.5vw,980px);aspect-ratio:4/3;background:var(--tile);overflow:hidden;position:relative}
+.slide img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top;pointer-events:none}
+@media (hover:none){.gallery{cursor:auto}}
+
+.meta{margin-top:36px;row-gap:24px}
+.meta .t{grid-column:span 4;min-width:0}
+.meta h2{font-size:24px;font-weight:500;line-height:1.15;letter-spacing:-.05em}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
+.tags li{background:var(--tile);color:var(--mute);font-family:var(--mono);font-size:12px;text-transform:uppercase;padding:6px 8px;line-height:1.1}
+.meta p{grid-column:6 / span 5;color:var(--body);min-width:0;max-width:60ch}
+.meta .side{grid-column:11 / span 2;display:flex;flex-direction:column;gap:20px;align-items:flex-start}
+.meta dt{font-family:var(--mono);font-size:12px;text-transform:uppercase;color:var(--mute);margin-bottom:8px}
+.more{display:flex;justify-content:center;margin-top:-56px}
+
+.drag{position:fixed;left:0;top:0;z-index:70;pointer-events:none;background:var(--btn-1);color:var(--bg);font-family:var(--mono);font-size:12px;text-transform:uppercase;padding:8px 12px;line-height:1;transform:translate(-50%,-50%) scale(0);transition:transform .25s cubic-bezier(.65,0,.35,1)}
+.drag.on{transform:translate(-50%,-50%) scale(1)}
+
+/* ---------- testimonials ---------- */
+.marquee{margin-left:calc(-1 * var(--side-l));margin-right:calc(-1 * var(--side-r));overflow:hidden;margin-top:25px}
+.marquee .row{display:flex;width:max-content;animation:slide 60s linear infinite}
+.marquee:hover .row{animation-play-state:paused}
+@keyframes slide{to{transform:translateX(-50%)}}
+.quote{flex:none;width:min(406px,86vw);min-height:312px;margin-right:8px;background:var(--tile);padding:24px;display:flex;flex-direction:column;justify-content:space-between;gap:32px}
+.quote blockquote{color:var(--body)}
+.quote strong{color:var(--ink);font-weight:500}
+.quote figcaption{display:flex;gap:12px;align-items:center}
+.av{width:44px;height:44px;border-radius:50%;background:var(--btn-2);display:grid;place-items:center;font-family:var(--mono);font-size:13px;flex:none}
+.quote .who{line-height:1.4}
+.quote .who span{display:block;color:var(--mute)}
+.quote.stat .big{font-size:64px;font-weight:500;letter-spacing:-.06em;line-height:1}
+.quote.stat p{color:var(--body);max-width:26ch}
+.quote.stat .btn{align-self:flex-start}
+
+/* ---------- about ---------- */
+.about{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:32px}
+.about .l{grid-column:span 3;min-width:0}
+.person{display:flex;gap:16px;align-items:center;margin-top:24px}
+.person img{width:64px;height:64px;border-radius:4px;object-fit:cover;background:var(--tile);border:1px solid var(--tile)}
+.person b{display:block;font-weight:500}
+.person span{color:var(--mute)}
+.bio{display:flex;flex-direction:column;gap:24px;max-width:640px;margin-top:36px;font-size:18px;line-height:1.4}
+.about .r{display:flex;flex-direction:column;gap:80px}
+.about .r ul{display:flex;flex-direction:column;gap:8px;font-size:18px;margin-top:24px}
+
+/* ---------- footer (revealed) ---------- */
+footer{position:sticky;bottom:0;z-index:1;padding-left:var(--side-l);padding-right:var(--side-r)}
+.cta{padding-block:120px 160px;row-gap:32px}
+.cta .label{grid-column:span 5}
+.cta .c{grid-column:6 / span 7;min-width:0}
+.cta h2{font-size:clamp(26px,3.2vw,36px);font-weight:500;line-height:1.15;letter-spacing:-.05em;max-width:560px}
+.cta .btns{margin-top:36px}
+.cta .mail{margin-top:20px;color:var(--mute);user-select:all}
+.foot{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;padding-bottom:36px;align-items:center}
+.foot .mid{text-align:center}
+.foot .end{justify-self:end;display:flex;gap:16px}
+.clock{font-variant-numeric:tabular-nums;white-space:nowrap}
+
+@media (max-width:900px){
+  .meta .t,.meta p,.meta .side{grid-column:1 / -1}
+  .meta .side{flex-direction:row;gap:40px;align-items:flex-end}
+  .about{grid-template-columns:1fr;gap:64px}.about .l{grid-column:auto}
+  .about .r{flex-direction:row;flex-wrap:wrap;gap:48px}
+  .cta .label,.cta .c{grid-column:1 / -1}
+  .foot{grid-template-columns:1fr}.foot .mid{text-align:left}.foot .end{justify-self:start}
+  .hero{padding-top:140px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}.marquee .row{animation:none}}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-in mono">
+    <a href="#top"><span class="roll"><span>Vivek™</span><span>Vivek™</span></span></a>
+    <a href="#work" class="hide-sm"><span class="roll"><span>Work</span><span>Work</span></span></a>
+    <a href="#testimonials" class="hide-sm"><span class="roll"><span>Testimonials</span><span>Testimonials</span></span></a>
+    <a href="#about" class="hide-sm"><span class="roll"><span>About</span><span>About</span></span></a>
+    <a href="https://cal.com/vivekdesignss/15min" target="_blank" rel="noopener"><span class="roll"><span>Book a call</span><span>Book a call</span></span></a>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <p class="label mono">Available for new projects</p>
+    <h1>Conversion-focused websites for SaaS and tech startups. Designed in Figma, built in Framer, and made to turn visitors into booked demos.</h1>
+    <div class="btns">
+      <a class="btn btn-dark" href="https://cal.com/vivekdesignss/15min" target="_blank" rel="noopener"><span class="roll"><span>Book a call</span><span>Book a call</span></span></a>
+      <a class="btn btn-light" href="#work"><span class="roll"><span>View recent work</span><span>View recent work</span></span></a>
+    </div>
+  </section>
+
+  <section id="work">
+    <p class="label mono">Selected work</p>
+    <div class="work-list">
+
+      <article>
+        <div class="gallery" data-drag>
+          <div class="track">
+            <div class="slide"><img src="assets/work/sentrya-1.jpg" alt="Sentrya website overview"></div>
+            <div class="slide"><img src="assets/work/sentrya-2.jpg" alt="Sentrya hero with product dashboard" loading="lazy"></div>
+            <div class="slide"><img src="assets/work/sentrya-3.jpg" alt="Sentrya platform features section" loading="lazy"></div>
+            <div class="slide"><img src="assets/work/sentrya-4.jpg" alt="Sentrya metrics and testimonial section" loading="lazy"></div>
+            <div class="slide"><img src="assets/work/sentrya-5.jpg" alt="Sentrya closing call to action" loading="lazy"></div>
+          </div>
+        </div>
+        <div class="grid meta">
+          <div class="t">
+            <h2>Sentrya — Cybersecurity platform</h2>
+            <ul class="tags"><li>Web design</li><li>Framer</li><li>UI design</li></ul>
+          </div>
+          <p>Security buyers want proof before promises. The page opens on a live view of the product, puts trusted-by logos and key numbers right under the hero, and uses a dark interface with a heat-map gradient so every section feels like part of a monitoring console.</p>
+          <div class="side">
+            <dl><dt>Industry</dt><dd>Cybersecurity</dd></dl>
+            <a class="mono" href="https://contra.com/p/W7U2Elcq-sentrya" target="_blank" rel="noopener"><span class="roll"><span>Case study ↗</span><span>Case study ↗</span></span></a>
+          </div>
+        </div>
+      </article>
+
+      <article>
+        <div class="gallery" data-drag>
+          <div class="track">
+            <div class="slide"><img src="assets/work/workflo-1.jpg" alt="Workflo website overview" loading="lazy"></div>
+            <div class="slide"><img src="assets/work/workflo-2.jpg" alt="Workflo hero section" loading="lazy"></div>
+            <div class="slide"><img src="assets/work/workflo-3.jpg" alt="Workflo integrations flow section" loading="lazy"></div>
+            <div class="slide"><img src="assets/work/workflo-4.jpg" alt="Workflo testimonials section" loading="lazy"></div>
+            <div class="slide"><img src="assets/work/workflo-5.jpg" alt="Workflo pricing section" loading="lazy"></div>
+          </div>
+        </div>
+        <div class="grid meta">
+          <div class="t">
+            <h2>Workflo — Workflow automation SaaS</h2>
+            <ul class="tags"><li>Web design</li><li>Framer</li><li>Conversion</li></ul>
+          </div>
+          <p>Workflo replaces the pile of tools small teams juggle every day. The site opens on that pain, shows every integration as one connected flow, and walks visitors through proof, pricing and FAQs toward a single free-trial button.</p>
+          <div class="side">
+            <dl><dt>Industry</dt><dd>Automation SaaS</dd></dl>
+            <a class="mono" href="https://contra.com/p/WAQLWYcF-workflo" target="_blank" rel="noopener"><span class="roll"><span>Case study ↗</span><span>Case study ↗</span></span></a>
+          </div>
+        </div>
+      </article>
+
+      <article>
+        <div class="gallery" data-drag>
+          <div class="track">
+            <div class="slide"><img src="assets/work/meetmind-1.jpg" alt="MeetMind website hero" loading="lazy"></div>
+            <div class="slide"><img src="assets/work/meetmind-2.jpg" alt="MeetMind privacy and problem section" loading="lazy"></div>
+            <div class="slide"><img src="assets/work/meetmind-3.jpg" alt="MeetMind features section" loading="lazy"></div>
+            <div class="slide"><img src="assets/work/meetmind-4.jpg" alt="MeetMind product video section" loading="lazy"></div>
+            <div class="slide"><img src="assets/work/meetmind-5.jpg" alt="MeetMind how-it-works steps" loading="lazy"></div>
+          </div>
+        </div>
+        <div class="grid meta">
+          <div class="t">
+            <h2>MeetMind — AI meeting assistant</h2>
+            <ul class="tags"><li>Web design</li><li>Framer</li><li>UI design</li></ul>
+          </div>
+          <p>MeetMind records calls, writes the summary and syncs action items to your workspace. A soft cloud hero and a live call mock-up show the result at a glance, so the headline promise feels concrete before anyone scrolls.</p>
+          <div class="side">
+            <dl><dt>Industry</dt><dd>AI productivity</dd></dl>
+            <a class="mono" href="https://contra.com/p/OllWB2qU-meetmind-b2-b-saas-web-design" target="_blank" rel="noopener"><span class="roll"><span>Case study ↗</span><span>Case study ↗</span></span></a>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <div class="more">
+    <a class="btn btn-light" href="https://contra.com/vivekdesignss/work" target="_blank" rel="noopener"><span class="roll"><span>View more work</span><span>View more work</span></span></a>
+  </div>
+
+  <section id="testimonials">
+    <p class="label mono">Words from clients</p>
+    <div class="marquee">
+      <div class="row" id="row">
+        <figure class="quote">
+          <blockquote><strong>He did a great job bringing the designs to life in Framer, paying close attention to the details</strong> and making sure everything was implemented accurately. Communication was smooth, he was responsive to feedback, and he delivered the work professionally.</blockquote>
+          <figcaption><span class="av">KD</span><span class="who">Kanishk Dubey<span>Client · Framer development</span></span></figcaption>
+        </figure>
+        <figure class="quote">
+          <blockquote>We worked with Vivek on two projects at Hoco Studio. <strong>He was quick, responsive, and delivered good-quality designs.</strong> Communication was smooth throughout, and I'd definitely recommend working with him.</blockquote>
+          <figcaption><span class="av">KD</span><span class="who">Kushal Das<span>Hoco Studio</span></span></figcaption>
+        </figure>
+        <figure class="quote stat">
+          <div class="big">5.0</div>
+          <p>Average rating across every client review on Contra.</p>
+          <a class="btn btn-light" href="https://contra.com/vivekdesignss/reviews" target="_blank" rel="noopener"><span class="roll"><span>Read reviews ↗</span><span>Read reviews ↗</span></span></a>
+        </figure>
+        <figure class="quote stat">
+          <div class="big">&lt;24h</div>
+          <p>Typical reply time, verified as a Quick Responder on Contra.</p>
+          <a class="btn btn-dark" href="https://cal.com/vivekdesignss/15min" target="_blank" rel="noopener"><span class="roll"><span>Book a call</span><span>Book a call</span></span></a>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="about">
+    <div class="l">
+      <p class="label mono">About me</p>
+      <div class="person">
+        <img src="assets/avatar.jpg" alt="Vivek Saroj">
+        <div><b>Vivek Saroj</b><span>Web designer &amp; Framer developer</span></div>
+      </div>
+      <div class="bio">
+        <p>I'm a web designer and certified Framer expert based in Delhi. I design sites for SaaS and tech teams who need their website to explain the product quickly and earn trust on the first visit.</p>
+        <p>I start with the message, not the mockup. Once we agree on who the page is for and what it should get them to do, the layout, visuals and motion all follow from that decision.</p>
+        <p>Because I design and build, what you approve in Figma is what goes live. You get a fast, responsive Framer site your team can update without waiting on a developer.</p>
+      </div>
+    </div>
+    <div class="r">
+      <section><p class="label mono">Best at</p>
+        <ul><li>Web Design</li><li>Framer Development</li><li>Landing Pages</li><li>UI / UX Design</li><li>Responsive Builds</li></ul></section>
+      <section><p class="label mono">Clients</p>
+        <ul><li>B2B SaaS</li><li>AI Startups</li><li>Cybersecurity</li><li>Design Studios</li><li>Founders</li></ul></section>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="grid cta">
+    <p class="label mono">Start a project</p>
+    <div class="c">
+      <h2>Got a product worth showing off? Let's build the website it deserves.</h2>
+      <div class="btns">
+        <button class="btn btn-light" id="copy" type="button"><span class="roll"><span id="copyA">Copy email</span><span id="copyB">Copy email</span></span></button>
+        <a class="btn btn-dark" href="https://cal.com/vivekdesignss/15min" target="_blank" rel="noopener"><span class="roll"><span>Book a call</span><span>Book a call</span></span></a>
+      </div>
+      <p class="mail mono" id="addr">svivek3008@gmail.com</p>
+    </div>
+  </div>
+  <div class="foot mono">
+    <p class="clock" id="clock">DEL --:--:-- [ GMT +5:30 ]</p>
+    <p class="mid"><a href="https://contra.com/vivekdesignss" target="_blank" rel="noopener"><span class="roll"><span>Contra</span><span>Contra</span></span></a>, <a href="https://cal.com/vivekdesignss/15min" target="_blank" rel="noopener"><span class="roll"><span>Cal.com</span><span>Cal.com</span></span></a>, <a href="mailto:svivek3008@gmail.com"><span class="roll"><span>Email</span><span>Email</span></span></a></p>
+    <a class="end" href="#top"><span class="roll"><span>Back to top</span><span>Back to top</span></span><span>↑</span></a>
+  </div>
+</footer>
+
+<div class="drag" id="drag" aria-hidden="true">Drag</div>
+
+<script>
+(function(){
+  // testimonials: duplicate the row once so the marquee loops seamlessly
+  const row=document.getElementById('row');
+  [...row.children].forEach(n=>{const c=n.cloneNode(true);c.setAttribute('aria-hidden','true');c.querySelectorAll('a').forEach(a=>a.tabIndex=-1);row.appendChild(c);});
+
+  // Delhi clock
+  const clock=document.getElementById('clock');
+  let fmt;try{fmt=new Intl.DateTimeFormat('en-US',{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:true,timeZone:'Asia/Kolkata'});}catch(e){}
+  function tick(){if(fmt)clock.textContent='DEL '+fmt.format(new Date())+' [ GMT +5:30 ]';}
+  tick();setInterval(tick,1000);
+
+  // galleries: drag to scroll with a "Drag" cursor
+  const badge=document.getElementById('drag');
+  document.querySelectorAll('[data-drag]').forEach(g=>{
+    let down=false,x0=0,s0=0,v=0,lx=0,raf;
+    g.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse')badge.classList.add('on');});
+    g.addEventListener('pointerleave',()=>badge.classList.remove('on'));
+    g.addEventListener('pointerdown',e=>{if(e.pointerType!=='mouse')return;down=true;x0=lx=e.clientX;s0=g.scrollLeft;v=0;cancelAnimationFrame(raf);g.setPointerCapture(e.pointerId);});
+    g.addEventListener('pointermove',e=>{badge.style.left=e.clientX+'px';badge.style.top=e.clientY+'px';
+      if(!down)return;g.scrollLeft=s0-(e.clientX-x0);v=e.clientX-lx;lx=e.clientX;});
+    const up=()=>{if(!down)return;down=false;(function glide(){v*=.94;g.scrollLeft-=v;if(Math.abs(v)>.5)raf=requestAnimationFrame(glide);})();};
+    g.addEventListener('pointerup',up);g.addEventListener('pointercancel',up);
+  });
+
+  // copy email
+  const btn=document.getElementById('copy'),addr=document.getElementById('addr'),a=document.getElementById('copyA'),b=document.getElementById('copyB');
+  function say(t){a.textContent=b.textContent=t;setTimeout(()=>{a.textContent=b.textContent='Copy email';},1800);}
+  btn.addEventListener('click',()=>{
+    const fallback=()=>{const r=document.createRange();r.selectNodeContents(addr);const s=getSelection();s.removeAllRanges();s.addRange(r);say('Press ⌘C');};
+    try{navigator.clipboard.writeText(addr.textContent).then(()=>say('Copied'),fallback);}catch(e){fallback();}
+  });
+})();
+</script>
+</body>
+</html>
